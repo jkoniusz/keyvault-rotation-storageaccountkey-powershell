@@ -6,11 +6,14 @@ function RegenerateKey($keyId, $providerAddress){
     $storageAccountName = ($providerAddress -split '/')[8]
     $resourceGroupName = ($providerAddress -split '/')[4]
     
-    #Regenerate key x
+    #Regenerate key 
     New-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName -KeyName $keyId
-    $newConnectionString = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context.ConnectionString
+    $newKeyValue = (Get-AzStorageAccountKey -ResourceGroupName $resourceGroupName -AccountName $storageAccountName|where KeyName -eq $keyId).value
+    
+    $baseConnectionString = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context.ConnectionString
+    $finalConnectionString = $baseConnectionString -replace "AccountKey=[^;]*", "AccountKey=$newKeyValue"
 
-    return $newConnectionString
+    return $finalConnectionString
 }
 
 function AddSecretToKeyVault($keyVAultName,$secretName,$newAccessKeyValue,$exprityDate,$tags){
