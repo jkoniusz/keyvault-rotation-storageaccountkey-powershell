@@ -9,7 +9,7 @@ function RegenerateKey($keyId, $providerAddress){
     $storageAccountName = ($providerAddress -split '/')[8]
     $resourceGroupName = ($providerAddress -split '/')[4]
     
-    #Regenerate key 
+    #Regenerate key x
     New-AzStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName -KeyName $keyId
     $newConnectionString = (Get-AzStorageAccount -ResourceGroupName $resourceGroupName -Name $storageAccountName).Context.ConnectionString
 
