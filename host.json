@@ -6,10 +6,5 @@
   },
   "managedDependency": {
     "enabled": true
-  },
-  "functions": {
-    "AKVStorageRotationHttp": {
-      "disabled": true
-    }
   }
 }
